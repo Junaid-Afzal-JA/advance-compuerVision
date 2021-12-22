@@ -75,14 +75,14 @@ class PoseDetection:
 
 if __name__ == '__main__':
 
-    cap = cv2.VideoCapture('data/cricket.MP4')
+    cap = cv2.VideoCapture('data/song1.mkv')  # give it a video path or 0 for live detection
     pose_detector = PoseDetection()
     previous_time = 0
     while True:
         success, image = cap.read()
         if success:
-            result = pose_detector.detect_pose(image, draw=False)
-            coordinates = pose_detector.find_pose_position(draw=True)
+            result = pose_detector.detect_pose(image, draw=True)
+            coordinates = pose_detector.find_pose_position(draw=False)
             print(coordinates)
 
             current_time = time.time()

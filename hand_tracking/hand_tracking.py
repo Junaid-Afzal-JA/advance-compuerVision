@@ -52,20 +52,20 @@ class HandTracker:
             hand_no: Which hand to identify
             draw: Draw landmark or not.
         """
-        land_marks = []
+        # land_marks = []
         if self.result.multi_hand_landmarks:
             specific_hand = self.result.multi_hand_landmarks[hand_no]
             for mark_no, mark in enumerate(specific_hand.landmark):
                 x_point = int(mark.x * width)
                 y_point = int(mark.y * height)
-                land_marks.append([mark_no, x_point, y_point])
+                # land_marks.append([mark_no, x_point, y_point])
                 if draw:
                     cv2.circle(img=self.temp_image,
                                center=(x_point, y_point), radius=8,
                                color=(210, 50, 50),
                                thickness=2)
 
-        return land_marks
+        # return land_marks
 
 
 if __name__ == '__main__':
@@ -77,8 +77,8 @@ if __name__ == '__main__':
         detect = HandTracker(model_complexity=0)
         res_image = detect.find_hands(frame, draw=True)
         marks = detect.find_position(draw=False)
-        if len(marks) > 0:
-            print((marks[8]))
+        # if len(marks) > 0:
+        #     print((marks[8]))
 
         #
         # rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)

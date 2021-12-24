@@ -75,7 +75,7 @@ class PoseDetection:
 
 if __name__ == '__main__':
 
-    cap = cv2.VideoCapture('data/song1.mkv')  # give it a video path or 0 for live detection
+    cap = cv2.VideoCapture('data/song.mkv')  # give it a video path or 0 for live detection
     pose_detector = PoseDetection()
     previous_time = 0
     while True:

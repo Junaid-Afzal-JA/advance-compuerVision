@@ -4,7 +4,7 @@ import mediapipe as mp
 import cv2
 
 
-class HandTracker:
+class HandDetector:
     """
     Track hand in live time
     """
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     while True:
         more, frame = cam.read()
         height, width, channel = frame.shape
-        detect = HandTracker(model_complexity=0)
+        detect = HandDetector(model_complexity=0)
         res_image = detect.find_hands(frame, draw=True)
         marks = detect.find_position(draw=False)
         # if len(marks) > 0:

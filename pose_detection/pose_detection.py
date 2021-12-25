@@ -3,7 +3,7 @@ import cv2
 import time
 
 
-class PoseDetection:
+class PoseDetector:
     """
     Detect Pose of person
     """
@@ -76,7 +76,7 @@ class PoseDetection:
 if __name__ == '__main__':
 
     cap = cv2.VideoCapture('data/song.mkv')  # give it a video path or 0 for live detection
-    pose_detector = PoseDetection()
+    pose_detector = PoseDetector()
     previous_time = 0
     while True:
         success, image = cap.read()

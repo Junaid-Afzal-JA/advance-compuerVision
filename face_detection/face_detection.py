@@ -4,12 +4,23 @@ import time
 
 
 class FaceDetector:
+    """
+    Detect Face in Image
+    """
     def __init__(self, min_detection_confidence=0.5):
         self.mp_fd = mp.solutions.face_detection
         self.draw = mp.solutions.drawing_utils
         self.face_detector = self.mp_fd.FaceDetection(min_detection_confidence=min_detection_confidence)
 
     def detect_face(self, image, draw=True):
+        """
+        Parameters:
+            image: Image in the form of np.array
+            draw: Draw Detection on Image or not.
+        Returns:
+             image: resultant image
+             data: contains face_id, points, confidence score.
+        """
         img_h, img_w, img_ch = image.shape
         img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         result = self.face_detector.process(img_rgb)
@@ -34,13 +45,7 @@ class FaceDetector:
 
                 if draw:
                     self.__stylish_draw(image, detect.location_data.relative_bounding_box)
-                    # cv2.rectangle(
-                    #               img=image,
-                    #               pt1=(x1, y1),
-                    #               pt2=(x2, y2),
-                    #               color=(0, 0, 0),
-                    #               thickness=2
-                    # )
+
                     cv2.putText(
                                 img=image,
                                 text=f'{str(score*100)}%',
@@ -52,7 +57,17 @@ class FaceDetector:
 
         return image, data
 
+    @staticmethod
     def __stylish_draw(self, image, face_loc, line_length=20, line_thickness=4):
+        """
+        Draw boundaries around rectangle
+        Parameters:
+            image: Image on which draw
+            face_loc: Points where rectangle draw
+            line_length: boundary length
+            line_thickness: boundary thickness
+        Returns:
+        """
         img_h, img_w, img_ch = image.shape
         x1 = face_loc.xmin
         y1 = face_loc.ymin
@@ -149,9 +164,8 @@ if __name__ == '__main__':
             fps = int(1 / (curr_time - pre_time))
             pre_time = curr_time
             img, result = detect.detect_face(image)
-            print(result)
-            cv2.putText(img, f'FPS: {str(fps)}', (5, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
+            cv2.putText(img, f'FPS: {str(fps)}', (5, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
             cv2.imshow('video', img)
             cv2.waitKey(40)
 

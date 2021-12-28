@@ -7,8 +7,6 @@ from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 
 
-
-
 if __name__ == '__main__':
     speakers = AudioUtilities.GetSpeakers()
     interface = speakers.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
@@ -18,6 +16,7 @@ if __name__ == '__main__':
     detect = HandDetector()
     vol_bar = 400
     vol_bar_per = 0
+    mid = 0, 0
     while True:
         _, image = cap.read()
         if _:
@@ -27,12 +26,12 @@ if __name__ == '__main__':
                 thumb = (marks[8][1], marks[8][2])
                 finger = (marks[4][1], marks[4][2])
                 cv2.circle(img=image,
-                           center=thumb, radius=10,
+                           center=thumb, radius=14,
                            color=(0, 0, 0),
                            thickness=cv2.FILLED,
                            )
                 cv2.circle(img=image,
-                           center=finger, radius=10,
+                           center=finger, radius=14,
                            color=(0, 0, 0),
                            thickness=cv2.FILLED
                            )
@@ -43,16 +42,13 @@ if __name__ == '__main__':
                          thickness=3
                          )
 
-                a = pow((thumb[0] - finger[0]), 2)
-                b = pow((thumb[1] - finger[1]), 2)
-                diff = a + b
-                diff = math.sqrt(diff)
-                # print(diff)
-                vol_bar = int(np.interp(diff, [23, 220], [400, 100]))
-                vol_bar_per = int(np.interp(diff, [23, 220], [0, 100]))
-                new_vol_lvl = int(np.interp(vol_bar_per, [0, 100], [v_min, v_max]))
+                diff = int(math.hypot(thumb[0] - finger[0], thumb[1] - finger[1]))
+                mid = int((thumb[0] + finger[0]) / 2), int((thumb[1] + finger[1]) / 2)
+                vol_bar = int(np.interp(diff, [30, 180], [400, 100]))
+                vol_bar_per = int(np.interp(diff, [30, 180], [0, 100]))
+                new_vol_lvl = int(np.interp(diff, [30, 180], [v_min, v_max]))
                 volume.SetMasterVolumeLevel(new_vol_lvl, None)
-                print(vol_bar_per)
+
             cv2.rectangle(img=image,
                           pt1=(20, 100),
                           pt2=(50, 400),
@@ -73,6 +69,7 @@ if __name__ == '__main__':
                         color=(0, 255, 0),
                         thickness=2
                         )
+
             cv2.imshow('image', image)
 
             cv2.waitKey(1)
